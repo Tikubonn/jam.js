@@ -6,8 +6,7 @@ and its javascript function compiler.
 jam() compile and call the closure by inputted source code.  
 
 jamはJavaScriptで実装された関数型言語です。  
-関数jamはjamの関数コンパイラです。  
-ソースコードを与えてあげると、コードを解釈してJavaScriptで実行可能な関数を生成し、実行してくれます。  
+地味にコンパイル型。関数jam()にソースコードを与えてあげると、コードを解釈してJavaScriptで実行可能な関数を生成し、実行してくれます。  
 
 ```javascript
 jam('(print "hello jam!")');
@@ -42,7 +41,7 @@ i need more thinking times for to simply the jam.
 ごめんなさいまだ未完成な言語なので、バグとかあると思います。  
 まだ仕様が煮詰まってなかったり、大事なところを思い違いをしてたり。  
 クロージャで遊んでた際に生まれた副産物で、最初から言語として書かれたものではないので、
-少々無理のある仕様があるかも。  
+少々無理のある仕様があるかも。
 お気に召したら遊んでやってください。  
 
 ## license
