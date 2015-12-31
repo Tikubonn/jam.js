@@ -6,7 +6,10 @@ and its javascript function compiler.
 jam() compile and call the closure by inputted source code.  
 
 jamはJavaScriptで実装された関数型言語です。  
-地味にコンパイル型。関数jam()にソースコードを与えてあげると、コードを解釈してJavaScriptで実行可能な関数を生成し、実行してくれます。  
+地味にコンパイル型。  
+コンパイルと言っても関数コンパイラです。  
+関数jam()にソースコードを与えてあげると、  
+コードを解釈してJavaScriptで実行可能な関数を生成し、実行してくれます。  
 
 ```javascript
 jam('(print "hello jam!")');
@@ -16,9 +19,10 @@ jam('(print "hello jam!")');
 if you want get the closure then  
 add the options to second argument.  
 
-ソースコードのみを与えて関数jamを実行した場合には、コンパイルされた関数はロストしますが、
-もし、生成された関数が欲しい場合には、例のように第二引数のオプション、compileonlyにtrueを与えてあげることによって、
-返り値として受け取ることができます。
+ソースコードのみを与えてjamを実行した場合、  
+コンパイルされた関数は実行され、実行結果が返り値となるため、生成された関数はロストします。  
+もし、生成された関数が欲しい場合、例のように第二引数のオプションに{compileonly: true}を与えてあげることにより、
+実行関数を受け取ることができます。
 
 ```javascript
 jam('(print "hello jam!")', {compileonly: true});
