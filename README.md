@@ -5,14 +5,18 @@ jam.js is a functional programmng language with javascript.
 and its javascript function compiler.  
 jam() compile and call the closure by inputted source code.  
 
-    << jam('(print "hello jam!")');
-    >> hello jam!
+```javascript
+jam('(print "hello jam!")');
+hello jam!
+```
 
 if you want get the closure then  
 add the options to second argument.  
 
-    << jam('(print "hello jam!")', {compileonly: true});
-    >> [function]
+```javascript
+jam('(print "hello jam!")', {compileonly: true});
+// [function]
+```
 
 ## documents
 
