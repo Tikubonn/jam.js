@@ -1,3 +1,4 @@
+
 # jam.js
 jam is a  functional programming language with javascript.  
 jam() is return a closure by input source code.  
@@ -7,7 +8,7 @@ jam() is return a closure by input source code.
     >> hello jam!
 
 jam is a prototype state. so prepared function is few, and code is very very messy.  
-because some functions and variable's declarations on global scope and anythings ...  
+because some functions and variable's declarations on global scope and anythings.  
 may be it has any bug. so it is not yet practical for now.  
 
 ## ToDo

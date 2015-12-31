@@ -1,264 +1,279 @@
 
-function call (lambda){
-  return lambda();
-}
+// jam() is a jam programming language compiler.
+// its get a argument that string source code or association object.
+// if got argument is string then make the compiled closure and run it.
+// else then its up to association options.
 
-function arraylast (array){
-  return array[array.length - 1];
-}
+// options 
+// source : compile with source code string
+// sourcefile : compile with it locate (has not been implemented yet)
+// cmpileonly : jam return the closure without call.
+// standard : has not been implemented yet.
+// standardscope : has not been implemented yet.
 
-function arrayarguments (argument, index){
-  return Array.prototype.slice.call(argument, index || 0);
-}
+function jam ($jamarguments, $optional){
 
-function assignsymbols (symbols, values){
-  arrayarguments(values).map (function (value, index){
-    symbols[index] && symbols[index](value());
-  });
-}
+  // $standardscopedefault and $obarrays is
+  // default scope and scope chain for now.
 
-function findobarrays (obarrays, name){
-  if (0 < obarrays.length)
-    return obarrays[0][name] ? obarrays[0][name] :
-    findobarrays(obarrays.slice(1), name);
-  return undefined;
-}
+  var $standardscopedefault;
+  var $obarrays;
 
-function intern (name){
-  var obarray;
-  var obarrays;
-  return function intern (argument){
-    if (!obarrays)
-      obarrays = $obarrays;
-    if (!obarray)
-      obarray = obarrays[0];
-    if (arguments.length == 1)
-      obarray[name] = argument;
-    return findobarrays(obarrays, name);
+  // end standard.
+  // jam argument process
+  // its procedure the jam()'s inputted arguments.
+
+  const $jamargumentsdefault = {
+    source: "",
+    sourcefile: null,
+    compileonly: false,
+    standard: $standardscopedefault,
+    standardscope: {}
   };
-}
+  
+  var source;
 
-function inversion (value){
-  return function inversion (argument){
-    if (arguments.length == 1)
-      value = argument;
-    return value;
-  };
-}
+  if (arguments.length == 2){
+    source = $jamarguments;
+    $jamarguments = $optional;
+    $jamarguments.source = source;
+  }
 
-// function internsymbol (name){
-//   var obarray;
-//   var obarrays;
-//   return function intern (argument){
-//     if (!obarrays)
-//       obarrays = $obarrays;
-//     if (!obarray)
-//       obarray = obarrays[0];
-//     if (arguments.length == 1)
-//       obarray[name] = argument();
-//     return findobarrays(obarrays, name);
-//   };
-// }
+  else if (typeof $jamarguments == "string"){
+    source = $jamarguments;
+    $jamarguments = $jamargumentsdefault;
+    $jamarguments.source = source;
+  }
+  
+  $jamarguments.source = $jamarguments.source || $jamargumentsdefault.source;
+  $jamarguments.sourcefile = $jamarguments.sourcefile || $jamargumentsdefault.sourcefile;
+  $jamarguments.compileonly = $jamarguments.compileonly || $jamargumentsdefault.compileonly;
+  $jamarguments.standard = $jamarguments.standard || $jamargumentsdefault.standard;
+  $jamarguments.standardscope = $jamarguments.standardscope || $jamargumentsdefault.standardscope;
 
-// function inversion (argument){
-//   var value = argument;
-//   return function inversion (argument){
-//     if (arguments.length == 1)
-//       value = argument;
-//     return value;
-//   };
-// }
+  // theare are main parsing and build processes.
+  // and define the primitive functions and anythings.
+  
+  function call (lambda){
+    return lambda();
+  }
 
-function lazy (argument){
-  return function (){
-    return argument;
-  };
-}
+  function arraylast (array){
+    return array[array.length - 1];
+  }
 
-function list (argument){
-  return inversion(Array.prototype.slice.call(arguments, 0));
-}
+  function arrayarguments (argument, index){
+    return Array.prototype.slice.call(argument, index || 0);
+  }
 
-function defun (func){
-  return function (argument){
-    return func.apply(null, argument());
-  };
-}
+  function assignsymbols (symbols, values){
+    arrayarguments(values).map (function (value, index){
+      symbols[index] && symbols[index](value());
+    });
+  }
 
-function defvar (value){
-  return lazy(value);
-}
+  function findobarrays (obarrays, name){
+    if (0 < obarrays.length)
+      return obarrays[0][name] ? obarrays[0][name] :
+      findobarrays(obarrays.slice(1), name);
+    return undefined;
+  }
 
-var $lazy = defun (
-  function (argument){
-    return lazy(argument);
-  });
+  function intern (name){
+    var obarray;
+    var obarrays;
+    return function intern (argument){
+      if (!obarrays)
+        obarrays = $obarrays;
+      if (!obarray)
+        obarray = obarrays[0];
+      if (arguments.length == 1)
+        obarray[name] = argument;
+      return findobarrays(obarrays, name);
+    };
+  }
 
-var $force = defun (
-  function (argument){
-    return argument();
-  });
+  function inversion (value){
+    return function inversion (argument){
+      if (arguments.length == 1)
+        value = argument;
+      return value;
+    };
+  }
+  
+  function promisecall (argument, argument2){
+    return function (){
+      return argument()()(argument2);
+    };
+  }
 
-var $add = defun (
-  function (argument){
-    var sum = argument()();
-    var index;
-    for (index = 1; index < arguments.length; index++)
-      sum += arguments[index]()();
-    return inversion(sum);
-  });
+  function lazy (argument){
+    return function (){
+      return argument;
+    };
+  }
 
-var $setq = defun (
-  function (argument, value){
-    return argument(value());
-  });
+  function list (argument){
+    return inversion(Array.prototype.slice.call(arguments, 0));
+  }
 
-var $setf = defun (
-  function (argument, value){
-    argument()(value()());
-    return argument();
-  });
+  // function for sequence operate.
+  // poped and pushed is has not side effect.
+  // there are return maid new sequence.
 
-var $print = defun (
-  function (argument){
-    var argumented = argument();
-    console.log(argumented());
-    return argumented;
-  });
+  function poped (array){
+    return array.slice(1);
+  }
 
-var $list = defun (
-  function (argument){
-    return inversion(arrayarguments(arguments).map(call));
-  });
+  function pushed (array, item){
+    return [item].concat(array);
+  }
 
-var $lisy = defun (
-  function (argument){
-    return inversion(arrayarguments(arguments));
-  });
+  // function of obarray
+  // there functions has side effect to $obarrays.
+  // there are old methods so will be remove.
 
-var $nth = defun (
-  function (sequence, index){
-    var sequenced = sequence()();
-    var indexed = index()();
-    return sequenced[indexed];
-  });
+  function pushobarray (){
+    $obarrays = pushed($obarrays, {});
+  }
 
-var $progn = defun (
-  function (argument){
-    return arraylast(arrayarguments(arguments).map(call));
-  });
+  function popobarray (){
+    $obarrays = poped($obarrays);
+  }
 
-var $funcall = defun (
-  function (argument){
-    var rest = arrayarguments(arguments, 1);
-    return argument()(lazy(rest));
-  });
+  // defun and defvar
+  // there are for define the jam functions.
 
-var $apply = defun (
-  function (argument, argument2){
-    return argument()(lazy(argument2()().map(lazy)));
-  });
-
-var $lambda = defun (
-  function (argument){
-
-    var argumenteds = argument()();
-    var rest = arrayarguments(arguments, 1);
-
-    return defun (
+  function defun (func){
+    return inversion(
       function (argument){
-        var result;
-        pushobarray();
-        assignsymbols(argumenteds, arguments);
-        result = $progn(lazy(rest));
-        popobarray();
-        return result;
+        return func.apply(null, argument());
       });
-  });
+  }
 
-var $defun = defun (
-  function (name){
-    var rest = arrayarguments(arguments, 1);
-    return $setq(list(name, lazy($lambda(lazy(rest)))));
-  });
+  function defvar (value){
+    return lazy(value);
+  }
 
-function promisecall (argument, argument2){
-  return function (){
-    return argument()(argument2);
+  // primitive functions
+  // there will calll for standards.
+
+  var $lazy = defun (
+    function (argument){
+      return lazy(argument);
+    });
+
+  var $force = defun (
+    function (argument){
+      return argument();
+    });
+
+  var $add = defun (
+    function (argument){
+      var sum = argument()();
+      var index;
+      for (index = 1; index < arguments.length; index++)
+        sum += arguments[index]()();
+      return inversion(sum);
+    });
+
+  var $setq = defun (
+    function (argument, value){
+      return argument(value());
+    });
+
+  var $setf = defun (
+    function (argument, value){
+      argument()(value()());
+      return argument();
+    });
+
+  var $print = defun (
+    function (argument){
+      var argumented = argument();
+      console.log(argumented());
+      return argumented;
+    });
+
+  var $list = defun (
+    function (argument){
+      return inversion(arrayarguments(arguments).map(call));
+    });
+
+  var $lisy = defun (
+    function (argument){
+      return inversion(arrayarguments(arguments));
+    });
+
+  var $nth = defun (
+    function (sequence, index){
+      var sequenced = sequence()();
+      var indexed = index()();
+      return sequenced[indexed];
+    });
+
+  var $progn = defun (
+    function (argument){
+      return arraylast(arrayarguments(arguments).map(call));
+    });
+
+  var $funcall = defun (
+    function (argument){
+      var rest = arrayarguments(arguments, 1);
+      return argument()()(lazy(rest));
+    });
+
+  var $apply = defun (
+    function (argument, argument2){
+      return argument()()(lazy(argument2()().map(lazy)));
+    });
+
+  var $lambda = defun (
+    function (argument){
+
+      var argumenteds = argument()();
+      var rest = arrayarguments(arguments, 1);
+
+      return defun(
+        function lambda (argument){
+          var result;
+          pushobarray();
+          assignsymbols(argumenteds, arguments);
+          result = $progn()(lazy(rest));
+          popobarray();
+          return result;
+        });      
+    });
+
+  var $defun = defun (
+    function (name){
+      var rest = arrayarguments(arguments, 1);
+      var lambda = $lambda()(lazy(rest));
+      return $setq()(list(name, lazy(lambda)));
+    });
+
+  $standardscopedefault = {
+    "lazy": $lazy,
+    "force": $force,
+    "setq": $setq,
+    "setf": $setf,
+    "print": $print,
+    "lambda": $lambda,
+    "defun": $defun,
+    "funcall": $funcall,
+    "apply": $apply,
+    "progn": $progn,
+    "list": $list,
+    "lisy": $lisy,
+    "nth": $nth,
+    "+": $add
   };
-}
 
-function poped (array){
-  return array.slice(1);
-}
+  $obarrays = [{}, $jamarguments.standardscope, $standardscopedefault];
 
-function pushed (array, item){
-  return [item].concat(array);
-}
-
-function pushobarray (){
-  $obarrays = pushed($obarrays, {});
-}
-
-function popobarray (){
-  $obarrays = poped($obarrays);
-}
-
-var $top = {
-  "lazy": $lazy,
-  "force": $force,
-  "setq": $setq,
-  "setf": $setf,
-  "print": $print,
-  "lambda": $lambda,
-  "defun": $defun,
-  "funcall": $funcall,
-  "apply": $apply,
-  "progn": $progn,
-  "list": $list,
-  "lisy": $lisy,
-  "nth": $nth,
-  "+": $add
-};
-
-var $obarrays = [{}, $top];
-
-// jam('(print (list 1 2 3))')();
-// jam('(print (lisy 1 2 3))')();
-
-jam('(defun hello (lisy name age) (print (+ "hello, " name ". you are " age " years old.")))')();
-jam('(funcall hello "tikubonn" 18)')();
-jam('(apply hello (list "chibi" 18))')();
-
-// jam('(defun hello (lisy name age) (print (+ "hello, " name ". you are " age " years old.")))')();
-// jam('(hello (+ "tikubonn" "!") 18)')();
-
-// jam('(setq hello (lambda (lisy name age) (print (+ "hello, " name ". you are " age " years old."))))')();
-// jam('(hello (+ "tikubonn" "!") 18)')();
-
-// jam('(setq a 0)')();
-// jam('(setq b 1)')();
-// jam('(setq c 2)')();
-// jam('(setq sam (list a b c))')();
-// jam('(print sam)')();
-
-// jam('(setq hello (lambda (list name age) (print name) (print age)))')();
-// jam('(hello "moco" 18)')();
-// jam('(print (progn (print 1) (print 2) (print 3)))')();
-// jam('(print (print (print "tikubonn")))')();
-// jam('(print (progn (print "hello") (print "moco")))')();
-// jam('(progn (print "hello") (print "moco"))')();
-// jam('(print (+ 1 2))')();
-// jam('(setq sam (list 1 2 3))')();
-// jam('(print (nth sam 0))')();
-// jam('(print (setf (nth sam 0) (nth sam 1)))')();
-// jam('(print (nth sam 0))')();
-// jam('(print (nth sam 1))')();
-// jam('(print (nth sam 2))')();
-// jam('(print (setf (nth sam 0) 11))')();
-// jam('(print (nth sam 0))')();
-
-function jam (source){
+  // jam source code parsing
+  // there are functions for procedure
+  // of jam source code parse.
 
   const open = function (){};
   const close = function (){};
@@ -299,14 +314,14 @@ function jam (source){
 
     function force (){
       switch (root.type){
-        case symbol:
-          return forcesymbol(root.value);
-        case string:
-          return forcestring(root.value);
-        case number:
-          return forcenumber(root.value);
-        default:
-          return lazy(null);
+      case symbol:
+        return forcesymbol(root.value);
+      case string:
+        return forcestring(root.value);
+      case number:
+        return forcenumber(root.value);
+      default:
+        return lazy(null);
       }
     }
 
@@ -336,19 +351,19 @@ function jam (source){
     }
 
     function slicematch (line, match){
-      var acc = [];
-      while (0 < line.length &&
-             0 <= match.indexOf(line[0]))
-        acc.push(line.shift());
-      return acc.join("");
+      var index;
+      for (index = 0; index < line.length; index++)
+        if (match.indexOf(line[0]) < 0)
+          break;
+      return slice(line, index);
     }
 
     function sliceunmatch (line, unmatch){
-      var acc = [];
-      while (0 < line.length &&
-             0 >= unmatch.indexOf(line[0]))
-        acc.push(line.shift());
-      return acc.join("");
+      var index;
+      for (index = 0; index < line.length; index++)
+        if (0 <= unmatch.indexOf(line[index]))
+          break;
+      return slice(line, index);
     }
 
     function slicedoublequote (line){
@@ -490,10 +505,11 @@ function jam (source){
 
   }
 
-  var parsed = parse(source);
+  var parsed = parse($jamarguments.source);
   var builded = build(parsed);
   var builded2 = build2(builded);
 
-  return builded2;
-
+  if ($jamarguments.compileonly)
+    return builded2;
+  return builded2();
 }
