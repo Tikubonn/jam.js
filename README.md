@@ -51,7 +51,7 @@ i need more thinking times for to simply the jam.
 ## license
 
 this software is released under the MIT License.  
-please see LICENSE.txt  
+please read to LICENSE.txt  
 
 ## todo
 
