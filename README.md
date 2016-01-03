@@ -6,7 +6,7 @@ and its javascript function compiler.
 jam() compile and call the closure by inputted source code.  
 
 jamはJavaScriptで実装された関数型言語です。  
-地味にコンパイル型。  
+地味にコンパイル法式。  
 コンパイルと言っても関数コンパイラです。  
 用意されている関数jamにソースコードを与えてあげると、  
 コードを解釈してJavaScriptで実行可能な関数を生成し、実行してくれます。  

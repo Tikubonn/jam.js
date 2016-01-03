@@ -79,18 +79,6 @@ function jam ($jamarguments, $optional){
     return lazy(undefined);
   }
 
-  function predefinedscope (lambda){
-    var result;
-    var exit = $obarrays;
-    var nest = pushed($obarrays, {});
-    return function (){
-      $obarrays = nest;
-      result = lambda.apply(arguments);
-      $obarrays = exit;
-      return result;
-    };
-  }
-
   function intern (name){
     var obarray;
     var obarrays;
@@ -246,7 +234,7 @@ function jam ($jamarguments, $optional){
       var argumenteds = argument()();
       var rest = arrayarguments(arguments, 1);
 
-      return predefinedscope(defun(
+      return defun(
         function (argument){
           var result;
           pushobarray();
@@ -254,17 +242,7 @@ function jam ($jamarguments, $optional){
           result = $progn()(lazy(rest));
           popobarray();
           return result;
-        }));
-
-      // return defun(
-      //   function (argument){
-      //     var result;
-      //     pushobarray();
-      //     assignsymbols(argumenteds, arguments);
-      //     result = $progn()(lazy(rest));
-      //     popobarray();
-      //     return result;
-      //   });
+        });
     });
 
   var $defun = defun (
