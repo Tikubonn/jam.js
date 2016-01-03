@@ -196,8 +196,9 @@ function jam ($jamarguments, $optional){
 
   var $setf = defun (
     function (argument, value){
-      argument()(value()());
-      return argument();
+      var argumented = argument();
+      argumented(value()());
+      return argumented;
     });
 
   var $print = defun (
