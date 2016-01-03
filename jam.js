@@ -189,6 +189,42 @@ function jam ($jamarguments, $optional){
       return inversion(sum);
     });
 
+  var $sub = defun (
+    function (argument){
+      var sum = argument()();
+      var index;
+      for (index = 1; index < arguments.length; index++)
+        sum -= arguments[index]()();
+      return inversion(sum);
+    });
+
+  var $mul = defun (
+    function (argument){
+      var sum = argument()();
+      var index;
+      for (index = 1; index < arguments.length; index++)
+        sum *= arguments[index]()();
+      return inversion(sum);
+    });
+
+  var $div = defun (
+    function (argument){
+      var sum = argument()();
+      var index;
+      for (index = 1; index < arguments.length; index++)
+        sum /= arguments[index]()();
+      return inversion(sum);
+    });
+
+  var $mod = defun (
+    function (argument){
+      var sum = argument()();
+      var index;
+      for (index = 1; index < arguments.length; index++)
+        sum %= arguments[index]()();
+      return inversion(sum);
+    });
+
   var $setq = defun (
     function (argument, value){
       return argument(value());
@@ -289,7 +325,11 @@ function jam ($jamarguments, $optional){
     "list": $list,
     "lisy": $lisy,
     "nth": $nth,
-    "+": $add
+    "+": $add,
+    "-": $sub,
+    "*": $mul,
+    "/": $div,
+    "%": $mod
   };
 
   $obarrays = [{}, $jamarguments.standardscope, $standardscopedefault];
