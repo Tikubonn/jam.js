@@ -32,6 +32,7 @@ jam('(print "hello jam!")', {compileonly: true});
 ## documents
 
 jams documents is here.  
+but, now editting. so some articles are not written yet.  
 [jam official documents](https://github.com/tikubonn/jam.js/wiki)  
 
 ## its prototype state.
