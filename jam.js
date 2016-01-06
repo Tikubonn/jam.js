@@ -28,7 +28,8 @@ function jam ($jamarguments, $optional){
     sourcefile: null,
     compileonly: false,
     standard: $standardscopedefault,
-    standardscope: {}
+    standardscope: {},
+    userscope: {}
   };
   
   var source;
@@ -50,6 +51,7 @@ function jam ($jamarguments, $optional){
   $jamarguments.compileonly = $jamarguments.compileonly || $jamargumentsdefault.compileonly;
   $jamarguments.standard = $jamarguments.standard || $jamargumentsdefault.standard;
   $jamarguments.standardscope = $jamarguments.standardscope || $jamargumentsdefault.standardscope;
+  $jamarguments.userscope = $jamarguments.userscope || $jamargumentsdefault.userscope;
 
   // theare are main parsing and build processes.
   // and define the primitive functions and anythings.
@@ -332,7 +334,7 @@ function jam ($jamarguments, $optional){
     "%": $mod
   };
 
-  $obarrays = [{}, $jamarguments.standardscope, $standardscopedefault];
+  $obarrays = [$jamarguments.userscope, $jamarguments.standardscope, $standardscopedefault];
 
   // jam source code parsing
   // there are functions for procedure
@@ -416,7 +418,7 @@ function jam ($jamarguments, $optional){
     function slicematch (line, match){
       var index;
       for (index = 0; index < line.length; index++)
-        if (match.indexOf(line[0]) < 0)
+        if (match.indexOf(line[index]) < 0)
           break;
       return slice(line, index);
     }
@@ -462,8 +464,12 @@ function jam ($jamarguments, $optional){
       return true;
     }
 
+    function restp (line, acc){
+      return true;
+    }
+
     function ignorep (line, acc){
-      return line[0] == " ";
+      return 0 <= " \t\n".indexOf(line[0]);
     }
 
     function onopen (line, acc){
@@ -487,12 +493,17 @@ function jam ($jamarguments, $optional){
     }
 
     function onsym (line, acc){
-      var value = sliceunmatch(line, "( )");
+      var value = sliceunmatch(line, "( \t\n)");
       acc.push(makepromisesymbol(value));
     }
 
     function onignore (line, acc){
       line.shift();
+    }
+
+    function onrest (line, acc){
+      console.log("rest: " + line.join(""));
+      line.pop(0);
     }
 
     function main (cases, source){
@@ -519,7 +530,8 @@ function jam ($jamarguments, $optional){
       [closep, onclose],
       [nump, onnum],
       [strp, onstr],
-      [symp, onsym]
+      [symp, onsym],
+      [restp, onrest]
     ], source);
 
   }
