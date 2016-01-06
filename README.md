@@ -29,6 +29,10 @@ jam('(print "hello jam!")', {compileonly: true});
 // [function]
 ```
 
+## demo
+
+demo of jam.js is [here](http://jam.tikubonn.org/demo).
+
 ## documents
 
 jams documents is here.  
