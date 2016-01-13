@@ -1,5 +1,5 @@
 
-jam('(print (make-object "name" "tikubonn" "age" 18))');
+jam('(print (object "name" "tikubonn" "age" 18))');
 
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
@@ -257,6 +257,19 @@ function jam ($jamarguments, $optional){
       return argumented;
     });
 
+  var $object = defun (
+    function (argument){
+      var object = {};
+      var len = arguments.length;
+      while (0 <= len){
+        var name = argument[len --];
+        var value = argument[len --];
+        object[name] = value;
+      }
+      return inversion(object);
+      // return inversion(arrayarguments(arguments).map(call));
+    });
+
   var $list = defun (
     function (argument){
       return inversion(arrayarguments(arguments).map(call));
@@ -265,6 +278,13 @@ function jam ($jamarguments, $optional){
   var $lisy = defun (
     function (argument){
       return inversion(arrayarguments(arguments));
+    });
+
+  var $get = defun (
+    function (object, name){
+      var objected = object()();
+      var named = name()();
+      return object[named];
     });
 
   var $nth = defun (
