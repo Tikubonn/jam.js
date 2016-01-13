@@ -181,6 +181,14 @@ function jam ($jamarguments, $optional){
   // primitive functions
   // there will calll for standards.
 
+  var $undefined = defvar(undefined);
+
+  var $null = defvar(null);
+
+  var $false = defvar(false);
+
+  var $true = defvar(true);
+
   var $lazy = defun (
     function (argument){
       return lazy(argument);
