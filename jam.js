@@ -399,16 +399,6 @@ function jam ($jamarguments, $optional){
           popobarray();
           return result;
         }));
-
-      // return defun(
-      //   function (argument){
-      //     var result;
-      //     pushobarray();
-      //     assignsymbols(argumenteds, arguments);
-      //     result = $progn()(lazy(rest));
-      //     popobarray();
-      //     return result;
-      //   });
     });
 
   var $defun = defun (
