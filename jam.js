@@ -221,25 +221,25 @@ function jam ($jamarguments, $optional){
   var $and = defun (
     function (argument){
       var index;
-      var state = true;
+      var argumented = $true();
       for (index = 0; index < arguments.length; index++){
-        state = state && arguments[index]()();
-        if (!state)
+        argumented = arguments[index]();
+        if (!argumented())
           break;
       }
-      return inversion(state);
+      return argumented;
     });
 
   var $or = defun (
     function (argument){
       var index;
-      var state = true;
+      var argumented = $true();
       for (index = 0; index < arguments.length; index++){
-        state = arguments[index]()();
-        if (state)
+        argumented = arguments[index]();
+        if (argumented())
           break;
       }
-      return inversion(state);
+      return argumented;
     });
 
   var $lazy = defun (
