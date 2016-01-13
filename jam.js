@@ -1,6 +1,4 @@
 
-jam('(print (object "name" "tikubonn" "age" 18))');
-
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
@@ -260,14 +258,13 @@ function jam ($jamarguments, $optional){
   var $object = defun (
     function (argument){
       var object = {};
-      var len = arguments.length;
-      while (0 <= len){
-        var name = argument[len --];
-        var value = argument[len --];
-        object[name] = value;
+      var index;
+      for (index = 0; index < arguments.length; index += 2){
+        var name = arguments[index];
+        var value = arguments[index + 1];
+        object [name()()] = value();
       }
       return inversion(object);
-      // return inversion(arrayarguments(arguments).map(call));
     });
 
   var $list = defun (
@@ -281,16 +278,16 @@ function jam ($jamarguments, $optional){
     });
 
   var $get = defun (
-    function (object, name){
-      var objected = object()();
+    function (name, object){
       var named = name()();
-      return object[named];
+      var objected = object()();
+      return objected[named];
     });
 
   var $nth = defun (
-    function (sequence, index){
-      var sequenced = sequence()();
+    function (index, sequence){
       var indexed = index()();
+      var sequenced = sequence()();
       return sequenced[indexed];
     });
 
@@ -355,8 +352,10 @@ function jam ($jamarguments, $optional){
     "funcall": $funcall,
     "apply": $apply,
     "progn": $progn,
+    "object": $object,
     "list": $list,
     "lisy": $lisy,
+    "get": $get,
     "nth": $nth,
     "+": $add,
     "-": $sub,
