@@ -189,6 +189,11 @@ function jam ($jamarguments, $optional){
 
   var $undefined = defvar(undefined);
 
+  var $eq = defun (
+    function (a, b){
+      return inversion(a === b);
+    });
+
   var $truep = defun (
     function (argument){
       return inversion (argument()() === true);
@@ -197,6 +202,16 @@ function jam ($jamarguments, $optional){
   var $falsep = defun (
     function (argument){
       return inversion (argument()() === false);
+    });
+
+  var $boolp = defun (
+    function (argument){
+      return inversion (typeof argument()() === "boolean");
+    });
+
+  var $numberp = defun (
+    function (argument){
+      return inversion (typeof argument()() === "number");
     });
 
   var $nullp = defun (
@@ -334,6 +349,11 @@ function jam ($jamarguments, $optional){
       return inversion(arrayarguments(arguments));
     });
 
+  var $listp = defun (
+    function (argument){
+      return inversion(Object.prototype.toString.call(argument()()) === Object.prototype.toString.call([]));
+    });
+
   var $get = defun (
     function (name, object){
       var named = name()();
@@ -410,6 +430,8 @@ function jam ($jamarguments, $optional){
     "false?": $falsep,
     "null?": $nullp,
     "undefined?": $undefinedp,
+    "bool?": $boolp,
+    "list?": $listp,
     "lazy": $lazy,
     "force": $force,
     "setq": $setq,
