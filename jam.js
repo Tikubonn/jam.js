@@ -1,4 +1,6 @@
 
+jam('(print (make-object "name" "tikubonn" "age" 18))');
+
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
@@ -115,9 +117,18 @@ function jam ($jamarguments, $optional){
     };
   }
   
+  // function promisecall (argument, argument2){
+  //   return function (){
+  //     return argument()()(argument2);
+  //   };
+  // }
+
   function promisecall (argument, argument2){
     return function (){
-      return argument()()(argument2);
+      var argumented = argument()();
+      if (!argumented)
+        throw("jam internal error: jam called a undefined function.");
+      return argumented(argument2);
     };
   }
 
