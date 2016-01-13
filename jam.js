@@ -181,13 +181,33 @@ function jam ($jamarguments, $optional){
   // primitive functions
   // there will calll for standards.
 
-  var $undefined = defvar(undefined);
-
-  var $null = defvar(null);
+  var $true = defvar(true);
 
   var $false = defvar(false);
 
-  var $true = defvar(true);
+  var $null = defvar(null);
+
+  var $undefined = defvar(undefined);
+
+  var $truep = defun (
+    function (argument){
+      return inversion (argument()() === true);
+    });
+
+  var $falsep = defun (
+    function (argument){
+      return inversion (argument()() === false);
+    });
+
+  var $nullp = defun (
+    function (argument){
+      return inversion (argument()() === null);
+    });
+
+  var $undefinedp = defun (
+    function (argument){
+      return inversion (argument()() === undefined);
+    });
 
   var $lazy = defun (
     function (argument){
@@ -350,6 +370,14 @@ function jam ($jamarguments, $optional){
     });
 
   $standardscopedefault = {
+    "true": $true,
+    "false": $false,
+    "null": $null,
+    "undefined": $undefined,
+    "truep": $truep,
+    "falsep": $falsep,
+    "nullp": $nullp,
+    "undefinedp": $undefinedp,
     "lazy": $lazy,
     "force": $force,
     "setq": $setq,
