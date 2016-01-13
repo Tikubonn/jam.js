@@ -1,4 +1,8 @@
 
+jam ('(print (or null null 1))');
+jam ('(print (or 1 2 3))');
+jam ('(print (and 1 2 3))');
+
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
@@ -209,6 +213,35 @@ function jam ($jamarguments, $optional){
       return inversion (argument()() === undefined);
     });
 
+  var $not = defun (
+    function (argument){
+      return inversion (!argument()());
+    });
+
+  var $and = defun (
+    function (argument){
+      var index;
+      var state = true;
+      for (index = 0; index < arguments.length; index++){
+        state = state && arguments[index]()();
+        if (!state)
+          break;
+      }
+      return inversion(state);
+    });
+
+  var $or = defun (
+    function (argument){
+      var index;
+      var state = true;
+      for (index = 0; index < arguments.length; index++){
+        state = arguments[index]()();
+        if (state)
+          break;
+      }
+      return inversion(state);
+    });
+
   var $lazy = defun (
     function (argument){
       return lazy(argument);
@@ -370,14 +403,17 @@ function jam ($jamarguments, $optional){
     });
 
   $standardscopedefault = {
+    "not": $not,
+    "and": $and,
+    "or": $or,
     "true": $true,
     "false": $false,
     "null": $null,
     "undefined": $undefined,
-    "truep": $truep,
-    "falsep": $falsep,
-    "nullp": $nullp,
-    "undefinedp": $undefinedp,
+    "true?": $truep,
+    "false?": $falsep,
+    "null?": $nullp,
+    "undefined?": $undefinedp,
     "lazy": $lazy,
     "force": $force,
     "setq": $setq,
