@@ -1,8 +1,4 @@
 
-jam ('(print (or null null 1))');
-jam ('(print (or 1 2 3))');
-jam ('(print (and 1 2 3))');
-
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
