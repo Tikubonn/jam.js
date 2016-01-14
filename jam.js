@@ -308,6 +308,21 @@ function jam ($jamarguments, $optional){
       return inversion(sum);
     });
 
+  var $when = defun (
+    function (condition, rest){
+      return condition()() ? rest() : $null;
+    });
+
+  var $unless = defun (
+    function (condition, rest){
+      return condition()() ? $null : rest();
+    });
+
+  var $if = defun (
+    function (condition, thened, elsed){
+      return condition()() ? thened(): elsed();
+    });
+
   var $setq = defun (
     function (argument, value){
       return argument(value());
@@ -409,6 +424,9 @@ function jam ($jamarguments, $optional){
     });
 
   $standardscopedefault = {
+    "when": $when,
+    "unless": $unless,
+    "if": $if,
     "not": $not,
     "and": $and,
     "or": $or,
@@ -612,15 +630,14 @@ function jam ($jamarguments, $optional){
     }
 
     function onrest (line, acc){
-      console.log("rest: " + line.join(""));
-      line.pop(0);
+      line.shift();
     }
 
     function main (cases, source){
 
       var line = source.split("");
       var acc = [];
-
+      
       while (0 < line.length){
         for (var i = 0; i < cases.length; i++){
           if (cases[i][0](line)){
