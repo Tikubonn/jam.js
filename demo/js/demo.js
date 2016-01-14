@@ -164,7 +164,7 @@ function jamwebrepl (){
       var namevalues = [];
       for (name in object){
         source = html(span(":" + name, "name"));
-        source += "&ensp";
+        source += "&ensp;";
         source += main2(object[name]);
         namevalues.push(source);
       }
