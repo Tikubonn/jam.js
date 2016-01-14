@@ -263,6 +263,58 @@ function jam ($jamarguments, $optional){
       return argument();
     });
 
+  var $lesserp = defun (
+    function (argument){
+      var argumented = argument();
+      var argumented2;
+      var index;
+      for (index = 0; index < arguments.length; index++){
+        argumented2 = arguments[index]();
+        if (!(argumented() < argumented2()))
+          return $false;
+      }
+      return $true;
+    });
+  
+  var $largerp = defun (
+    function (argument){
+      var argumented = argument();
+      var argumented2;
+      var index;
+      for (index = 0; index < arguments.length; index++){
+        argumented2 = arguments[index]();
+        if (!(argumented() > argumented2()))
+          return $false;
+      }
+      return $true;
+    });
+
+  var $lesseroreqp = defun (
+    function (argument){
+      var argumented = argument();
+      var argumented2;
+      var index;
+      for (index = 0; index < arguments.length; index++){
+        argumented2 = arguments[index]();
+        if (!(argumented() <= argumented2()))
+          return $false;
+      }
+      return $true;
+    });
+  
+  var $largeroreqp = defun (
+    function (argument){
+      var argumented = argument();
+      var argumented2;
+      var index;
+      for (index = 0; index < arguments.length; index++){
+        argumented2 = arguments[index]();
+        if (!(argumented() >= argumented2()))
+          return $false;
+      }
+      return $true;
+    });
+
   var $add = defun (
     function (argument){
       var sum = argument()();
@@ -424,6 +476,10 @@ function jam ($jamarguments, $optional){
     });
 
   $standardscopedefault = {
+    ">": $largerp,
+    "<": $lesserp,
+    ">=": $largeroreqp,
+    "<=": $lesseroreqp,
     "when": $when,
     "unless": $unless,
     "if": $if,
