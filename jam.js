@@ -1,7 +1,4 @@
 
-jam ('(print (when true (print "hello") (print "moco")))');
-jam ('(print (progn true (print "hello") (print "moco")))');
-
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
@@ -484,7 +481,15 @@ function jam ($jamarguments, $optional){
       return $setq()(list(name, lazy(lambda)));
     });
 
+  // var $nativefunction = defun (
+  //   function (lambda){
+  //     return function (){
+  //       return lambda()(lazy(arguments));
+  //     };
+  //   });
+
   $standardscopedefault = {
+    // "native-function": $nativefunction,
     ">": $largerp,
     "<": $lesserp,
     ">=": $largeroreqp,
