@@ -63,10 +63,10 @@ ul#form li#input input:focus{
 }
 
 ul#form li.output span {
-  display: inline-block;
-  padding: 0px 9px;
-  border-radius: 3px;
-  vertical-align: middle;
+  /* display: inline-block; */
+  /* padding: 0px 9px;
+     border-radius: 3px;
+     vertical-align: middle; */
 }
 
 ul#form li.output span.comment {
@@ -78,43 +78,47 @@ ul#form li.output span.code {
 }
 
 ul#form li.output span.error {
-  background-color: #f66;
+  color: #f66;
 }
 
 ul#form li.output span.number {
-  background-color: #393;
-  /* background-color: #3d3; */
+  color: #393;
+  font-weight: bold;
 }
 
 ul#form li.output span.string {
-  background-color: #c63;
-  /* background-color: #f96; */
+  color: #f63;
+  font-weight: bold;
 }
 
 ul#form li.output span.function {
-  background-color: #63c;
-  /* background-color: #96f; */
+  font-weight: bold;
+  color: #93c;
 }
 
 ul#form li.output span.list {
-  background-color: inherit;
+  color: inherit;
+  font-weight: bold;
 }
 
 ul#form li.output span.object {
-  background-color: inherit;
+  color: inherit;
+  font-weight: bold;
 }
 
 ul#form li.output span.object span.name {
-  background-color: #63c;
+  color: #93c;
+  font-weight: bold;
 }
 
 ul#form li.output span.object span.value {
-  background-color: inherit;
+  color: inherit;
+  font-weight: bold;
 }
 
 ul#form li.output span.boolean {
-  background-color: #c6f;
-  background-color: #939;
+  color: #c6f;
+  font-weight: bold;
 }
 
 ul#form li.output a:hover,
