@@ -168,7 +168,7 @@ function jamwebrepl (){
         source += main2(object[name]);
         namevalues.push(source);
       }
-      return span("{&ensp;" + namevalues.join("") + "&ensp;}", "object");
+      return span("{&ensp;" + namevalues.join("&ensp;") + "&ensp;}", "object");
     }
 
     function onboolean (object){
