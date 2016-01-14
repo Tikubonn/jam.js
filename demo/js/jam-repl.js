@@ -18,18 +18,23 @@ function jamrepl (){
     console.log("jam error: " + error);
   }
 
-  function onloaddefault (queue){
-    console.log("jam inputted: " + queue.source);
+  function onloaddefault (inversion){
+    console.log("jam inputted: " + inversion());
   }
 
   function onprogress (queue){
-    console.log("jam putted: " + queue.source);
+    console.log("jam progress: " + queue.sources);
+  }
+
+  function oninput (queue){
+    console.log("jam inputted: " + queue.source);
   }
   
   this.onerror = onerrordefault;
   this.onjamerror = onjamerrordefault;
   this.onload = onloaddefault;
   this.onprogress = onprogress;
+  this.oninput = oninput;
 
   var root = this;
   var codeQueue = new CodeQueue();
@@ -171,6 +176,7 @@ function jamrepl (){
   function CodeQueue (){
 
     this.codeDepth = new CodeDepth();
+    this.sources = "";
     this.source = "";
 
     // this.onerror = null;
@@ -186,9 +192,12 @@ function jamrepl (){
     function put (source){
 
       try {
-        
+
         parent.codeDepth.update(source);
-        parent.source += "\n" + source;
+        parent.source = source;
+        parent.sources += "\n" + parent.source;
+        
+        root.oninput && root.oninput(parent);
         
         if (parent.codeDepth.isinvalid())
           throw ("jam repl error: invalid source code was detected on brackets.");
@@ -197,7 +206,7 @@ function jamrepl (){
           root.onprogress && root.onprogress(parent);
         
         if (parent.codeDepth.isevaluatable()){
-          jamcall(parent.source, root.jamarguments);
+          jamcall(parent.sources, root.jamarguments);
           reset();
         }
       }

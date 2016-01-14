@@ -1,7 +1,10 @@
 
 function jamwebrepl (){
-
+  
   var repl = new jamrepl();
+  var form = document.getElementById("form");
+  var input = document.getElementById("input");
+  var readline = document.getElementById("readline");
 
   var print = defun(function (argument){
     var argumented = argument();
@@ -35,9 +38,19 @@ function jamwebrepl (){
     printoutjam(inversion());
   }
 
+  function oninput (queue){
+    printout(
+      line(span(queue.source, "comment")));
+  }
+
+  function onprogress (queue){
+  }
+
   repl.onload = onload;
   repl.onerror = onerror;
   repl.onjamerror = onjamerror;
+  repl.oninput = oninput;
+  repl.onprogress = onprogress;
 
   const beginningtext =
           
@@ -58,10 +71,6 @@ function jamwebrepl (){
           "<b>oops!</b><br/>" +
           "im sorry. could not continue processing of this REPL because it was gotten some error.<br/>" +
           "please contact us to http://twitter.com/tikubonn.";
-
-  var form = document.getElementById("form");
-  var input = document.getElementById("input");
-  var readline = document.getElementById("readline");
 
   function line (argument){
     var line = document.createElement("li");
@@ -145,7 +154,7 @@ function jamwebrepl (){
     }
 
     function onstring (object){
-      return span(object, "string");
+      return span('"' + object + '"', "string");
     }
 
     function onfunction (object){
