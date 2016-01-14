@@ -549,7 +549,7 @@ function jam ($jamarguments, $optional){
 
     function enddoublequote (line, index){
       var end = line.indexOf('"', index);
-      if (0 < end && line[end - 1] == "\\")
+      if (0 <= end && line[end - 1] == "\\")
         return enddoublequote(line, end + 1);
       return end;
     }
