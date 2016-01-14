@@ -62,6 +62,13 @@ ul#form li#input input:focus{
   border-color: #090;
 }
 
+ul#form li.output span {
+  display: inline-block;
+  padding: 0px 9px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
 ul#form li.output span.comment {
   color: #333;
 }
@@ -71,39 +78,43 @@ ul#form li.output span.code {
 }
 
 ul#form li.output span.error {
-  color: #f66;
+  background-color: #f66;
 }
 
 ul#form li.output span.number {
-  color: #3d3;
+  background-color: #393;
+  /* background-color: #3d3; */
 }
 
 ul#form li.output span.string {
-  color: #f96;
+  background-color: #c63;
+  /* background-color: #f96; */
 }
 
 ul#form li.output span.function {
-  color: #96f;
+  background-color: #63c;
+  /* background-color: #96f; */
 }
 
 ul#form li.output span.list {
-  color: inherit;
+  background-color: inherit;
 }
 
 ul#form li.output span.object {
-  color: inherit;
+  background-color: inherit;
 }
 
 ul#form li.output span.object span.name {
-  color: #f39;
+  background-color: #63c;
 }
 
 ul#form li.output span.object span.value {
-  color: inherit;
+  background-color: inherit;
 }
 
 ul#form li.output span.boolean {
-  color: #c6f;
+  background-color: #c6f;
+  background-color: #939;
 }
 
 ul#form li.output a:hover,
