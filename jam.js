@@ -1,4 +1,7 @@
 
+jam ('(print (when true (print "hello") (print "moco")))');
+jam ('(print (progn true (print "hello") (print "moco")))');
+
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
@@ -268,10 +271,11 @@ function jam ($jamarguments, $optional){
       var argumented = argument();
       var argumented2;
       var index;
-      for (index = 0; index < arguments.length; index++){
+      for (index = 1; index < arguments.length; index++){
         argumented2 = arguments[index]();
         if (!(argumented() < argumented2()))
           return $false;
+        argumented = argumented2;
       }
       return $true;
     });
@@ -281,10 +285,11 @@ function jam ($jamarguments, $optional){
       var argumented = argument();
       var argumented2;
       var index;
-      for (index = 0; index < arguments.length; index++){
+      for (index = 1; index < arguments.length; index++){
         argumented2 = arguments[index]();
         if (!(argumented() > argumented2()))
           return $false;
+        argumented = argumented2;
       }
       return $true;
     });
@@ -294,10 +299,11 @@ function jam ($jamarguments, $optional){
       var argumented = argument();
       var argumented2;
       var index;
-      for (index = 0; index < arguments.length; index++){
+      for (index = 1; index < arguments.length; index++){
         argumented2 = arguments[index]();
         if (!(argumented() <= argumented2()))
           return $false;
+        argumented = argumented2;
       }
       return $true;
     });
@@ -307,10 +313,11 @@ function jam ($jamarguments, $optional){
       var argumented = argument();
       var argumented2;
       var index;
-      for (index = 0; index < arguments.length; index++){
+      for (index = 1; index < arguments.length; index++){
         argumented2 = arguments[index]();
         if (!(argumented() >= argumented2()))
           return $false;
+        argumented = argumented2;
       }
       return $true;
     });
@@ -361,13 +368,15 @@ function jam ($jamarguments, $optional){
     });
 
   var $when = defun (
-    function (condition, rest){
-      return condition()() ? rest() : $null;
+    function (condition){
+      var rest = arrayarguments(arguments, 1);
+      return condition()() ? $progn()(lazy(rest)) : $null;
     });
 
   var $unless = defun (
-    function (condition, rest){
-      return condition()() ? $null : rest();
+    function (condition){
+      var rest = arrayarguments(arguments, 1);
+      return condition()() ? $null : $progn()(lazy(rest));
     });
 
   var $if = defun (
