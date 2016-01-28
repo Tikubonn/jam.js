@@ -29,6 +29,7 @@ function jam ($jamarguments, $optional){
     compileonly: false,
     standard: $standardscopedefault,
     standardscope: {},
+    nativescope: {},
     userscope: {}
   };
   
@@ -78,7 +79,11 @@ function jam ($jamarguments, $optional){
     if (0 < obarrays.length)
       return obarrays[0][name] ? obarrays[0][name] :
       findobarrays(obarrays.slice(1), name);
-    return lazy(undefined);
+    return findnativeobarray($jamarguments.nativescope, name); // lazy(undefined);
+  }
+
+  function findnativeobarray (nativeobarray, name){
+    return inversionnative(nativeobarray, name);
   }
 
   function predefinedscope (lambda){
@@ -113,6 +118,40 @@ function jam ($jamarguments, $optional){
         value = argument;
       return value;
     };
+  }
+
+  function inversionnative (parent, name){
+    return function inversionnative (argument){
+      if (arguments.length == 1)
+	parent[name] = argument;
+      return inversionnativeexpand(parent, name);
+    };
+  }
+
+  function inversionnativeexpand (parent, name){
+    var value = parent[name];
+    if (value instanceof Object){
+      if (value.constructor == Array)
+	return inversionnativeexpandarray(value);
+      if (value.constructor == Object)
+	return inversionnativeexpandobject(value);
+    }
+    return value;
+  }
+
+  function inversionnativeexpandarray (parent){
+    return parent.map(
+      function (value, name){
+	return inversionnative(parent, name);
+      });
+  }
+  
+  function inversionnativeexpandobject (parent){
+    var object = {};
+    var name;
+    for (name in parent)
+      object[name] = inversionnative(parent, name);
+    return object;
   }
   
   // function promisecall (argument, argument2){
@@ -164,7 +203,7 @@ function jam ($jamarguments, $optional){
     $obarrays = poped($obarrays);
   }
 
-  // defun and defvar
+  // Defun and defvar
   // there are for define the jam functions.
 
   function defun (func){
@@ -481,14 +520,24 @@ function jam ($jamarguments, $optional){
       return $setq()(list(name, lazy(lambda)));
     });
 
+  // var $native = defun (
+  //   function (lambda){
+  //     return arrayarguments(arguments).map(call).map(call);
+  //   });
+
   // var $nativefunction = defun (
   //   function (lambda){
-  //     return function (){
-  //       return lambda()(lazy(arguments));
+  //     return function (argument){
+  //       var argumenteds = arrayarguments(arguments);
+  //       // console.log(argumenteds);
+  //       // argumenteds = ["nana"];
+  //       // console.log(argumenteds);
+  //       return lambda()()(lazy(argumenteds.map(lazy).map(inversion)))();
   //     };
   //   });
 
   $standardscopedefault = {
+    // "native": $native,
     // "native-function": $nativefunction,
     ">": $largerp,
     "<": $lesserp,
