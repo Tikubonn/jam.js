@@ -221,11 +221,12 @@ function jam ($jamarguments, $optional){
   // there will calll for standards.
 
   var $native = function (){
-    var native = {};
-    var name;
-    for (name in $jamarguments.nativescope)
-      native[name] = inversionnative($jamarguments.nativescope, name);
-    return native;
+    // var native = {};
+    // var name;
+    // for (name in $jamarguments.nativescope)
+    //   native[name] = inversionnative($jamarguments.nativescope, name);
+    // return native;
+    return inversionnativeexpandobject($jamarguments.nativescope);
   };
 
   var $true = defvar(true);
