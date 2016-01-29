@@ -220,6 +220,14 @@ function jam ($jamarguments, $optional){
   // primitive functions
   // there will calll for standards.
 
+  var $native = function (){
+    var native = {};
+    var name;
+    for (name in $jamarguments.nativescope)
+      native[name] = inversionnative($jamarguments.nativescope, name);
+    return native;
+  };
+
   var $true = defvar(true);
 
   var $false = defvar(false);
@@ -414,7 +422,7 @@ function jam ($jamarguments, $optional){
       var rest = arrayarguments(arguments, 1);
       return condition()() ? $null : $progn()(lazy(rest));
     });
-
+  
   var $if = defun (
     function (condition, thened, elsed){
       return condition()() ? thened(): elsed();
@@ -470,14 +478,16 @@ function jam ($jamarguments, $optional){
     function (name, object){
       var named = name()();
       var objected = object()();
-      return objected[named];
+      return objected[named] ||
+	inversionnative(object, named);
     });
 
   var $nth = defun (
     function (index, sequence){
       var indexed = index()();
       var sequenced = sequence()();
-      return sequenced[indexed];
+      return sequenced[indexed] ||
+	inversionnative(sequenced, indexed);
     });
 
   var $progn = defun (
@@ -539,6 +549,7 @@ function jam ($jamarguments, $optional){
   $standardscopedefault = {
     // "native": $native,
     // "native-function": $nativefunction,
+    "native": $native,
     ">": $largerp,
     "<": $lesserp,
     ">=": $largeroreqp,
