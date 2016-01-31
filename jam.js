@@ -836,7 +836,8 @@ function jam ($jamarguments, $optional){
 
     function build2 (context){
       return promisecall(
-        intern("progn"),
+        // intern("progn")
+	lazy ($progn),
         lazy (context.map(build2in)));
     }
 
