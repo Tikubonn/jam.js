@@ -121,6 +121,14 @@ function jam ($jamarguments, $optional){
     };
   }
 
+  // function inversionobject (parent, name){
+  //   return function inversionobject (argument){
+  //     if (arguments.length == 1)
+  // 	parent[name] = argument;
+  //     return parent[name];
+  //   };
+  // }
+  
   function inversionnative (parent, name){
     return function inversionnative (argument){
       if (arguments.length == 1)
@@ -166,6 +174,8 @@ function jam ($jamarguments, $optional){
       var argumented = argument()();
       if (!argumented)
         throw("jam internal error: jam called a undefined function.");
+      if (typeof argumented == "function")
+	throw("jam internal error: jam called a not function.");
       return argumented(argument2);
     };
   }
@@ -475,16 +485,16 @@ function jam ($jamarguments, $optional){
     function (name, object){
       var named = name()();
       var objected = object()();
-      return objected[named] ||
-      	inversionnative(objected, named);
+      return objected[named]; // ||
+	// inversionobject(objected, named);
     });
 
   var $nth = defun (
     function (index, sequence){
       var indexed = index()();
       var sequenced = sequence()();
-      return sequenced[indexed] ||
-	inversionnative(sequenced, indexed);
+      return sequenced[indexed]; // ||
+	// inversionobject(sequenced, indexed);
     });
 
   var $progn = defun (
