@@ -52,6 +52,7 @@ function jam ($jamarguments, $optional){
   $jamarguments.compileonly = $jamarguments.compileonly || $jamargumentsdefault.compileonly;
   $jamarguments.standard = $jamarguments.standard || $jamargumentsdefault.standard;
   $jamarguments.standardscope = $jamarguments.standardscope || $jamargumentsdefault.standardscope;
+  $jamarguments.nativescope = $jamarguments.nativescope || $jamargumentsdefault.nativescope;
   $jamarguments.userscope = $jamarguments.userscope || $jamargumentsdefault.userscope;
 
   // theare are main parsing and build processes.
@@ -221,11 +222,6 @@ function jam ($jamarguments, $optional){
   // there will calll for standards.
 
   var $native = function (){
-    // var native = {};
-    // var name;
-    // for (name in $jamarguments.nativescope)
-    //   native[name] = inversionnative($jamarguments.nativescope, name);
-    // return native;
     return inversionnativeexpandobject($jamarguments.nativescope);
   };
 
@@ -480,7 +476,7 @@ function jam ($jamarguments, $optional){
       var named = name()();
       var objected = object()();
       return objected[named] ||
-	inversionnative(object, named);
+      	inversionnative(objected, named);
     });
 
   var $nth = defun (
