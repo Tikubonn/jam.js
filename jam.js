@@ -174,7 +174,7 @@ function jam ($jamarguments, $optional){
       var argumented = argument()();
       if (!argumented)
         throw("jam internal error: jam called a undefined function.");
-      if (typeof argumented == "function")
+      if (typeof argumented != "function")
 	throw("jam internal error: jam called a not function.");
       return argumented(argument2);
     };
