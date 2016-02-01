@@ -1,4 +1,8 @@
 
+// jam ("(setq sample (object)) (print sample) (setf (get 0 sample) 0) (print sample) (print (get 0 sample))");
+
+jam ('(setq person (object "name" "tikubonn" "age" 18)) (print person) (print (get "name" person))');
+
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
@@ -128,6 +132,14 @@ function jam ($jamarguments, $optional){
   //     return parent[name];
   //   };
   // }
+
+  function inversionobject (parent, name){
+    return function inversionobject (argument){
+      if (arguments.length == 1)
+	parent[name] = argument;
+      return parent[name];
+    };
+  }
   
   function inversionnative (parent, name){
     return function inversionnative (argument){
@@ -464,10 +476,15 @@ function jam ($jamarguments, $optional){
       var object = {};
       var index;
       for (index = 0; index < arguments.length; index += 2){
-        var name = arguments[index];
-        var value = arguments[index + 1];
-        object [name()()] = value();
+	var name = arguments[index];
+	var value = arguments[index + 1];
+	object[name()()] = value()();
       }
+      // for (index = 0; index < arguments.length; index += 2){
+      //   var name = arguments[index];
+      //   var value = arguments[index + 1];
+      //   object [name()()] = value();
+      // }
       return inversion(object);
     });
 
@@ -490,7 +507,8 @@ function jam ($jamarguments, $optional){
     function (name, object){
       var named = name()();
       var objected = object()();
-      return objected[named]; // ||
+      return inversionobject(objected, named);
+      // return objected[named]; // ||
 	// inversionobject(objected, named);
     });
 
@@ -498,7 +516,8 @@ function jam ($jamarguments, $optional){
     function (index, sequence){
       var indexed = index()();
       var sequenced = sequence()();
-      return sequenced[indexed]; // ||
+      return inversionobject(sequenced, indexed);
+      // return sequenced[indexed]; // ||
 	// inversionobject(sequenced, indexed);
     });
 
