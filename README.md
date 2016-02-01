@@ -28,8 +28,8 @@ jam ('(print "hello jam!")');
 ## how to get only a compiled function?
 
 if you want get compiled closure,
-you should use option of "compile only".
-option of "compile only" is return a compiled closure without run.
+you should use option of "compile only".  
+option of "compile only" is return a compiled closure without run.  
 
 <!-- if you want get the closure then   -->
 <!-- add the options to second argument.   -->
@@ -54,19 +54,13 @@ jams documents is here.
 but, now editting. so some articles are not written yet.  
 [jam official documents](https://github.com/tikubonn/jam.js/wiki)  
 
-## its prototype state.
+## it is prototype state.
 
-jam is a prototype state.  
-so its may be has any bug and problems.  
-because i wrote in the mood for at that time.  
-and jam is a byproducts that was born in attempt of closure.  
-i need more thinking times for to simply the jam.  
-
-ごめんなさいまだ未完成な言語なので、バグとかあると思います。  
-まだ仕様が煮詰まってなかったり、大事なところを思い違いをしてたり。  
-クロージャで遊んでた際に生まれた副産物で、最初から言語として書かれたものではないので、
-少々無理のある仕様があるかも。
-お気に召したら遊んでやってください。  
+jam is a prototype state. 
+probably it is has any bug and problems.  
+i wrote jam in the mood. 
+jam is a byproducts that was born from some attempts of closure.
+i need more thinking times for jam specification.
 
 ## license
 
