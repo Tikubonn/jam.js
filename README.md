@@ -21,8 +21,10 @@ function of `jam()` compile a closure from inputted source code, and run, and re
 
 ```javascript
 
-jam('(print "hello jam!")');
-// hello jam!
+jam ('(print "hello jam!")');
+
+// print message the "hello jam" to console.
+// it return a string of "hello" that wrapped in closure.
 
 ```
 
