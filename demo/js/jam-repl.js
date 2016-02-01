@@ -225,6 +225,7 @@ function jamrepl (){
 
     function reset (){
       parent.source = "";
+      parent.sources = "";
       parent.codeDepth.reset();
     }
     
