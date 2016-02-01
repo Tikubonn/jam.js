@@ -3,6 +3,7 @@
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
 // else then its up to association options.
+// it is be writen by tikubonn http://tikubonn.org or jp or @tikubonn in twitter.
 
 // options 
 // source : compile with source code string
@@ -147,12 +148,24 @@ function jam ($jamarguments, $optional){
 
   function inversionnativeexpand (parent, name){
     var value = parent[name];
+
+    // on structure
+    
     if (value instanceof Object){
       if (value.constructor == Array)
 	return inversionnativeexpandarray(value);
       if (value.constructor == Object)
 	return inversionnativeexpandobject(value);
     }
+
+    // on function
+
+    if (typeof value == "function"){
+      return function (argument){
+	return value.apply(null, argument().map(call).map(call));
+      };
+    }
+    
     return value;
   }
 
