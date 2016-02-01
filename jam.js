@@ -248,6 +248,11 @@ function jam ($jamarguments, $optional){
       return inversion(a === b);
     });
 
+  var $equal = defun (
+    function (a, b){
+      return inversion (a == b);
+    });
+
   var $truep = defun (
     function (argument){
       return inversion (argument()() === true);
@@ -556,6 +561,8 @@ function jam ($jamarguments, $optional){
   $standardscopedefault = {
     // "native": $native,
     // "native-function": $nativefunction,
+    "eq": $eq,
+    "equal": $equal,
     "native": $native,
     ">": $largerp,
     "<": $lesserp,
