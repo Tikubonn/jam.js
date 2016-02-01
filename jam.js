@@ -1,4 +1,7 @@
 
+var result = jam ('(print "hello jam!")');
+console.log(result());
+
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
@@ -275,7 +278,7 @@ function jam ($jamarguments, $optional){
 
   var $equal = defun (
     function (a, b){
-      return inversion (a == b);
+      return inversion (a()() === b()());
     });
 
   var $truep = defun (
