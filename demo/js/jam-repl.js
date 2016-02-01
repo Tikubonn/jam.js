@@ -193,6 +193,8 @@ function jamrepl (){
 
       try {
 
+	var enabled = enablep (source);
+	
         parent.codeDepth.update(source);
         parent.source = source;
         parent.sources += "\n" + parent.source;
@@ -205,7 +207,7 @@ function jamrepl (){
         if (parent.codeDepth.isprogress())
           root.onprogress && root.onprogress(parent);
         
-        if (parent.codeDepth.isevaluatable()){
+        if (enabled && parent.codeDepth.isevaluatable()){
           jamcall(parent.sources, root.jamarguments);
           reset();
         }
@@ -217,6 +219,15 @@ function jamrepl (){
         reset();
       }
 
+    }
+
+    function enablep (source){
+      var disables = "\t ";
+      var len = source.length;
+      while (len--)
+	if (disables.indexOf(source[len]) < 0)
+	  return true;
+      return false;
     }
 
     function get (){
