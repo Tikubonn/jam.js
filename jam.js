@@ -160,13 +160,17 @@ function jam ($jamarguments, $optional){
 
     // on function
 
-    if (typeof value == "function"){
-      return function (argument){
-	return value.apply(null, argument().map(call).map(call));
-      };
-    }
+    if (typeof value == "function")
+      return inversionnativewrapfunction(value);
     
     return value;
+  }
+
+  function inversionnativewrapfunction (func){
+    return function nativefunction (argument){
+      return inversion(
+	func.apply(null, argument().map(call).map(call)));
+    };
   }
 
   function inversionnativeexpandarray (parent){
