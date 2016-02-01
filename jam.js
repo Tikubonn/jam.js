@@ -486,7 +486,7 @@ function jam ($jamarguments, $optional){
 
   var $list = defun (
     function (argument){
-      return inversion(arrayarguments(arguments).map(call));
+      return inversion(arrayarguments(arguments).map(call).map(call));
     });
 
   var $lisy = defun (
