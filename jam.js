@@ -1,8 +1,4 @@
 
-// jam ("(setq sample (object)) (print sample) (setf (get 0 sample) 0) (print sample) (print (get 0 sample))");
-
-jam ('(setq person (object "name" "tikubonn" "age" 18)) (print person) (print (get "name" person))');
-
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
