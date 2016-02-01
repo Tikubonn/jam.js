@@ -20,8 +20,10 @@ so you can use compiled function in other programs.
 function of `jam()` compile a closure from inputted source code, and run, and return value from evaluated.
 
 ```javascript
+
 jam('(print "hello jam!")');
 // hello jam!
+
 ```
 
 ## how to get only a compiled function?
