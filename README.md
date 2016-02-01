@@ -20,19 +20,16 @@ so you can use compiled function in other programs.
 function of `jam()` compile a closure from inputted source code, and run, and return value from evaluated.
 
 ```javascript
-
 jam ('(print "hello jam!")');
-
 // print message the "hello jam" to console.
 // it return a string of "hello" that wrapped in closure.
-
 ```
 
 ## how to get only a compiled function?
 
 if you want get compiled closure,
 you should use option of "compile only".
-
+option of "compile only" is return a compiled closure without run.
 
 <!-- if you want get the closure then   -->
 <!-- add the options to second argument.   -->
@@ -44,7 +41,7 @@ you should use option of "compile only".
 
 ```javascript
 jam('(print "hello jam!")', {compileonly: true});
-// [function]
+// return a compiled function without run.
 ```
 
 ## demo
