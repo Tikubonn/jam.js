@@ -11,15 +11,13 @@
 <!-- 用意されている関数jamにソースコードを与えてあげると、   -->
 <!-- コードを解釈してJavaScriptで実行可能な関数を生成し、実行してくれます。   -->
 
-jam.js is a functional programming language with javascript. 
-it is a javascript closure function compiler. it return the pure javascript closure.
-so you can use compiled function in other programs.
-
+jam.js is a functional programming language with javascript.  
+it is a javascript closure function compiler. it return the pure javascript closure.  
+so you can use compiled function in other programs.  
 
 ## how to use?
 
-function of jam compile a closure from inputted source code, and run, and return value from evaluated.
-
+function of `jam()` compile a closure from inputted source code, and run, and return value from evaluated.
 
 ```javascript
 jam('(print "hello jam!")');
