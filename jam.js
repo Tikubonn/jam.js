@@ -403,50 +403,87 @@ function jam ($jamarguments, $optional){
       return $true;
     });
 
+  // function sum (func, sequence, base){
+  //   var sum = base;
+  //   var index;
+  //   for (index = 0; index < sequence.length; index++)
+  //     sum = func(sum, sequence[index]()());
+  //   return inversion(sum);
+  // }
+
+  function makesum (func, base, need) {
+    return function (a, s, m){
+      var len = arguments.length || 0;
+      if (need <= len){
+      	var sum = base == null ? arguments[0]()() : base;
+      	var index = base == null ? 1 : 0;
+      	for (;index < len; index++)
+      	  sum = func(sum, arguments[index]()());
+      	return inversion(sum);
+      }
+      throw ("jam error: too few arguments to a function.");
+    };
+  }
+
   var $add = defun (
-    function (argument){
-      var sum = argument()();
-      var index;
-      for (index = 1; index < arguments.length; index++)
-        sum += arguments[index]()();
-      return inversion(sum);
-    });
+    makesum (function (a, b) {return a + b;}, 0, 0)
+    // function (argument){
+    //   return sum (function (a, b) {return a + b;}, arguments, 0);
+    //   // var sum = argument()();
+    //   // var index;
+    //   // for (index = 1; index < arguments.length; index++)
+    //   //   sum += arguments[index]()();
+    //   // return inversion(sum);
+    // }
+  );
 
   var $sub = defun (
-    function (argument){
-      var sum = argument()();
-      var index;
-      for (index = 1; index < arguments.length; index++)
-        sum -= arguments[index]()();
-      return inversion(sum);
-    });
+    makesum (function (a, b) {return a - b;}, 0, 0)
+    // function (argument){
+    //   return sum (function (a, b) {return a - b;}, arguments, 0);
+    //   // var sum = argument()();
+    //   // var index;
+    //   // for (index = 1; index < arguments.length; index++)
+    //   //   sum -= arguments[index]()();
+    //   // return inversion(sum);
+    // }
+  );
 
   var $mul = defun (
-    function (argument){
-      var sum = argument()();
-      var index;
-      for (index = 1; index < arguments.length; index++)
-        sum *= arguments[index]()();
-      return inversion(sum);
-    });
+    makesum (function (a, b) {return a * b;}, 1, 0)
+    // function (argument){
+    //   return sum (function (a, b) {return a * b;}, arguments, 1);
+    //   // var sum = argument()();
+    //   // var index;
+    //   // for (index = 1; index < arguments.length; index++)
+    //   //   sum *= arguments[index]()();
+    //   // return inversion(sum);
+    // }
+  );
 
   var $div = defun (
-    function (argument){
-      var sum = argument()();
-      var index;
-      for (index = 1; index < arguments.length; index++)
-        sum /= arguments[index]()();
-      return inversion(sum);
-    });
+    makesum (function (a, b) {return a / b;}, null, 1)
+    // function (argument){
+    //   return sum (function (a, b) {return a / b;}, arguments, 1);
+    //   // var sum = argument()();
+    //   // var index;
+    //   // for (index = 1; index < arguments.length; index++)
+    //   //   sum /= arguments[index]()();
+    //   // return inversion(sum);
+    // }
+  );
 
   var $mod = defun (
-    function (argument){
-      var sum = argument()();
-      var index;
-      for (index = 1; index < arguments.length; index++)
-        sum %= arguments[index]()();
-      return inversion(sum);
-    });
+    makesum (function (a, b) {return a % b;}, null, 2)
+    // function (argument){
+    //   return sum (function (a, b) {return a / b;}, arguments, 0);
+    //   // var sum = argument()();
+    //   // var index;
+    //   // for (index = 1; index < arguments.length; index++)
+    //   //   sum %= arguments[index]()();
+    //   // return inversion(sum);
+    // }
+  );
 
   var $when = defun (
     function (condition){
