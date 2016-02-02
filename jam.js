@@ -198,9 +198,9 @@ function jam ($jamarguments, $optional){
     return function (){
       var argumented = argument()();
       if (!argumented)
-        throw("jam internal error: jam called a undefined function.");
+        throw("jam error: jam called a undefined function.");
       if (typeof argumented != "function")
-	throw("jam internal error: jam called a not function.");
+	throw("jam error: jam called a not function.");
       return argumented(argument2);
     };
   }
@@ -516,6 +516,22 @@ function jam ($jamarguments, $optional){
       return inversion(Object.prototype.toString.call(argument()()) === Object.prototype.toString.call([]));
     });
 
+  var $push = defun (
+    function (value, sequence){
+      // var sequenced = sequence()();
+      // sequenced.push(value()());
+      // return sequence;
+      var sequenced = sequence();
+      sequenced().push(value()());
+      return sequenced;
+    });
+
+  var $pop = defun (
+    function (sequence){
+      var poped = sequence()().shift();
+      return inversion(poped);
+    });
+
   var $get = defun (
     function (name, object){
       var named = name()();
@@ -593,6 +609,8 @@ function jam ($jamarguments, $optional){
   $standardscopedefault = {
     // "native": $native,
     // "native-function": $nativefunction,
+    "pop": $pop,
+    "push": $push,
     "eq": $eq,
     "equal": $equal,
     "native": $native,
