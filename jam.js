@@ -1,6 +1,4 @@
 
-jam ('(print (+)) (print (-)) (print (*)) (print (/ 3)) (print (% 3 3))');
-
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
@@ -314,6 +312,16 @@ function jam ($jamarguments, $optional){
     function (argument){
       return inversion (!argument()());
     });
+
+  // function makelogreduce (func, need, base){
+  //   return function (){
+  //     var stat = base;
+  //     var index;
+  //     for (index = 0; index < arguments.length; index++){
+  // 	stat = func (stat, arguments[index]);
+  //     }
+  //   };
+  // }
 
   var $and = defun (
     function (argument){
