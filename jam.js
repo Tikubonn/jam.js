@@ -1,4 +1,6 @@
 
+jam ('(print (+)) (print (-)) (print (*)) (print (/ 3)) (print (% 3 3))');
+
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
@@ -411,18 +413,48 @@ function jam ($jamarguments, $optional){
   //   return inversion(sum);
   // }
 
-  function makesum (func, base, need) {
-    return function (a, s, m){
-      var len = arguments.length || 0;
-      if (need <= len){
-      	var sum = base == null ? arguments[0]()() : base;
-      	var index = base == null ? 1 : 0;
-      	for (;index < len; index++)
-      	  sum = func(sum, arguments[index]()());
-      	return inversion(sum);
+  // function makesum (func, base, need) {
+  //   return function (){
+  //     var len = arguments.length || 0;
+  //     if (need <= len){
+  //     	var sum = base == null ? arguments[0]()() : base;
+  //     	var index = base == null ? 1 : 0;
+  //     	for (;index < len; index++)
+  //     	  sum = func(sum, arguments[index]()());
+  //     	return inversion(sum);
+  //     }
+  //     throw ("jam error: too few arguments to a function.");
+  //   };
+  // }
+
+  function makesum (func, need, base) {
+    
+    return function (/* a, s, b, m, i */){
+      var a, s, b, m, i;
+      a = arguments;
+      s = a.length || 0;
+      if (need <= s){
+      	b = base == null;
+      	m = b ? a[0]()() : base;
+      	i = b ? 1 : 0;
+      	while (i < s)
+      	  m = func(m, a[i]()()), i++;
+      	return inversion(m);
       }
       throw ("jam error: too few arguments to a function.");
     };
+    
+    // return function (){
+    //   var len = arguments.length || 0;
+    //   if (need <= len){
+    // 	var sum = base == null ? arguments[0]()() : base;
+    // 	var index = base == null ? 1 : 0;
+    // 	for (;index < len; index++)
+    // 	  sum = func(sum, arguments[index]()());
+    // 	return inversion(sum);
+    //   }
+    //   throw ("jam error: too few arguments to a function.");
+    // };
   }
 
   var $add = defun (
@@ -450,7 +482,7 @@ function jam ($jamarguments, $optional){
   );
 
   var $mul = defun (
-    makesum (function (a, b) {return a * b;}, 1, 0)
+    makesum (function (a, b) {return a * b;}, 0, 1)
     // function (argument){
     //   return sum (function (a, b) {return a * b;}, arguments, 1);
     //   // var sum = argument()();
@@ -462,7 +494,7 @@ function jam ($jamarguments, $optional){
   );
 
   var $div = defun (
-    makesum (function (a, b) {return a / b;}, null, 1)
+    makesum (function (a, b) {return a / b;}, 1, null)
     // function (argument){
     //   return sum (function (a, b) {return a / b;}, arguments, 1);
     //   // var sum = argument()();
@@ -474,7 +506,7 @@ function jam ($jamarguments, $optional){
   );
 
   var $mod = defun (
-    makesum (function (a, b) {return a % b;}, null, 2)
+    makesum (function (a, b) {return a % b;}, 2, null)
     // function (argument){
     //   return sum (function (a, b) {return a / b;}, arguments, 0);
     //   // var sum = argument()();
