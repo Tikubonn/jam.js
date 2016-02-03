@@ -741,9 +741,17 @@ function jam ($jamarguments, $optional){
       return $setq()(list(name, lazy(lambda)));
     });
 
+  var $defsyn = defun (
+    function (name){
+      var rest = arrayarguments(arguments, 1);
+      var syntax = $syntax()(lazy(rest));
+      return $setq()(list(name, lazy(syntax)));
+    });
+
   $standardscopedefault = {
     // "native": $native,
     // "native-function": $nativefunction,
+    "defsyn": $defsyn,
     "syntax": $syntax,
     "pop": $pop,
     "push": $push,
