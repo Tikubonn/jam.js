@@ -451,6 +451,20 @@ function jam ($jamarguments, $optional){
       return argumented;
     });
 
+  var $incf = defun(
+    function (argument, inc){
+      var argumented = argument();
+      argumented(argumented() + (inc ? inc()() : 1));
+      return argumented;
+    });
+
+  var $decf = defun(
+    function (argument, dec){
+      var argumented = argument();
+      argumented(argumented() - (dec ? dec()() : 1));
+      return argumented;
+    });
+
   function makesum (func, need, base) {
     
     return function (/* a, s, b, m, i */){
@@ -748,7 +762,9 @@ function jam ($jamarguments, $optional){
     "/": $div,
     "%": $mod,
     "++": $inc,
-    "--": $dec
+    "--": $dec,
+    "incf": $incf,
+    "decf": $decf
   };
 
   $obarrays = [$jamarguments.userscope, $jamarguments.standardscope, $standardscopedefault];
