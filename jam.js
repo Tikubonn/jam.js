@@ -649,36 +649,36 @@ function jam ($jamarguments, $optional){
 
   var $push = defun (
     function (value, sequence){
-      // var sequenced = sequence()();
-      // sequenced.push(value()());
-      // return sequence;
-      var sequenced = sequence();
-      sequenced().push(value()());
-      return sequenced;
+      sequence = sequence();
+      sequence().push(value()());
+      return sequence;
+      // var sequenced = sequence();
+      // sequenced().push(value()());
+      // return sequenced;
     });
 
   var $pop = defun (
     function (sequence){
-      var poped = sequence()().shift();
-      return inversion(poped);
+      return inversion(sequence()().shift());
+      // var poped = sequence()().shift();
+      // return inversion(poped);
     });
 
   var $get = defun (
     function (name, object){
-      var named = name()();
-      var objected = object()();
-      return inversionobject(objected, named);
-      // return objected[named]; // ||
-	// inversionobject(objected, named);
+      return inversionobject(object()(), name()());
+      
+      // var named = name()();
+      // var objected = object()();
+      // return inversionobject(objected, named);
     });
 
   var $nth = defun (
     function (index, sequence){
-      var indexed = index()();
-      var sequenced = sequence()();
-      return inversionobject(sequenced, indexed);
-      // return sequenced[indexed]; // ||
-	// inversionobject(sequenced, indexed);
+      return inversionobject(sequence()(), index()());
+      // var indexed = index()();
+      // var sequenced = sequence()();
+      // return inversionobject(sequenced, indexed);
     });
 
   var $progn = defun (
