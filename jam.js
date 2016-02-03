@@ -270,7 +270,7 @@ function jam ($jamarguments, $optional){
 
   var $eq = defun (
     function (a, b){
-      return inversion(a === b);
+      return inversion(a() === b());
     });
 
   var $equal = defun (
@@ -742,23 +742,27 @@ function jam ($jamarguments, $optional){
   const open = function (){};
   const close = function (){};
 
-  const symbol = "symbol";
-  const string = "string";
-  const number = "number";
+  const symbol = 0;
+  const string = 1;
+  const number = 2;
+  
+  // const symbol = "symbol";
+  // const string = "string";
+  // const number = "number";
 
   function promise (value, type){
 
-    this.value = value;
-    this.type = type;
-
-    var root = this;
-
-    function forceint (value){
-      return lazy(inversion(parseInt(value)));
-    }
-
-    function forcefloat (value){
-      return lazy(inversion(parseFloat(value)));
+    function force (){
+      switch (type){
+      case symbol:
+	return forcesymbol (value);
+      case string:
+	return forcestring (value);
+      case number:
+	return forcenumber (value);
+      default:
+	return $null;
+      }
     }
 
     function forcenumber (value){
@@ -766,6 +770,14 @@ function jam ($jamarguments, $optional){
       if (index == -1)
         return forceint(value);
       return forcefloat(value);
+    }
+    
+    function forceint (value){
+      return lazy(inversion(parseInt(value)));
+    }
+
+    function forcefloat (value){
+      return lazy(inversion(parseFloat(value)));
     }
 
     function forcestring (value){
@@ -776,20 +788,54 @@ function jam ($jamarguments, $optional){
       return intern(value);
     }
 
-    function force (){
-      switch (root.type){
-      case symbol:
-        return forcesymbol(root.value);
-      case string:
-        return forcestring(root.value);
-      case number:
-        return forcenumber(root.value);
-      default:
-        return lazy(null);
-      }
-    }
+    return force;
 
-    this.force = force;
+    // return {
+    //   force: force
+    // };
+
+    // this.value = value;
+    // this.type = type;
+
+    // var root = this;
+
+    // function forceint (value){
+    //   return lazy(inversion(parseInt(value)));
+    // }
+
+    // function forcefloat (value){
+    //   return lazy(inversion(parseFloat(value)));
+    // }
+
+    // function forcenumber (value){
+    //   var index = value.indexOf(".");
+    //   if (index == -1)
+    //     return forceint(value);
+    //   return forcefloat(value);
+    // }
+
+    // function forcestring (value){
+    //   return lazy(inversion(value));
+    // }
+
+    // function forcesymbol (value){
+    //   return intern(value);
+    // }
+
+    // function force (){
+    //   switch (root.type){
+    //   case symbol:
+    //     return forcesymbol(root.value);
+    //   case string:
+    //     return forcestring(root.value);
+    //   case number:
+    //     return forcenumber(root.value);
+    //   default:
+    //     return lazy(null);
+    //   }
+    // }
+
+    // this.force = force;
 
   }
 
@@ -965,7 +1011,8 @@ function jam ($jamarguments, $optional){
     function build2in (context){
       if (context instanceof Array)
         return build2seq(context);
-      return context.force();
+      return context();
+      // return context.force();
     }
 
     function build2 (context){
