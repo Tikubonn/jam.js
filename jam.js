@@ -438,32 +438,56 @@ function jam ($jamarguments, $optional){
   // }
 
   var $inc = defun (
-    function (argument){
-      var argumented = argument();
-      argumented(argumented() + 1);
-      return argumented;
-    });
+    function (a){
+      a = a();
+      a(a() + 1);
+      return a;
+    }
+    // function (argument){
+    //   var argumented = argument();
+    //   argumented(argumented() + 1);
+    //   return argumented;
+    // }
+  );
 
   var $dec = defun (
-    function (argument){
-      var argumented = argument();
-      argumented(argumented() - 1);
-      return argumented;
-    });
+    function (a){
+      a = a();
+      a(a() - 1);
+      return a;
+    }
+    // function (argument){
+    //   var argumented = argument();
+    //   argumented(argumented() - 1);
+    //   return argumented;
+    // }
+  );
 
   var $incf = defun(
-    function (argument, inc){
-      var argumented = argument();
-      argumented(argumented() + (inc ? inc()() : 1));
-      return argumented;
-    });
+    function (a, b){
+      a = a();
+      a(a() + (b ? b()() : 1));
+      return a;
+    }
+    // function (argument, inc){
+    //   var argumented = argument();
+    //   argumented(argumented() + (inc ? inc()() : 1));
+    //   return argumented;
+    // }
+  );
 
   var $decf = defun(
-    function (argument, dec){
-      var argumented = argument();
-      argumented(argumented() - (dec ? dec()() : 1));
-      return argumented;
-    });
+    function (a, b){
+      a = a();
+      a(a() - (b ? b()() : 1));
+      return a;
+    }
+    // function (argument, dec){
+    //   var argumented = argument();
+    //   argumented(argumented() - (dec ? dec()() : 1));
+    //   return argumented;
+    // }
+  );
 
   function makesum (func, need, base) {
     
