@@ -162,6 +162,8 @@ function jam ($jamarguments, $optional){
 
     if (typeof value == "function")
       return inversionnativewrapfunction(value);
+
+    // on otherwise
     
     return value;
   }
@@ -434,6 +436,20 @@ function jam ($jamarguments, $optional){
   //     throw ("jam error: too few arguments to a function.");
   //   };
   // }
+
+  var $inc = defun (
+    function (argument){
+      var argumented = argument();
+      argumented(argumented() + 1);
+      return argumented;
+    });
+
+  var $dec = defun (
+    function (argument){
+      var argumented = argument();
+      argumented(argumented() - 1);
+      return argumented;
+    });
 
   function makesum (func, need, base) {
     
@@ -730,7 +746,9 @@ function jam ($jamarguments, $optional){
     "-": $sub,
     "*": $mul,
     "/": $div,
-    "%": $mod
+    "%": $mod,
+    "++": $inc,
+    "--": $dec
   };
 
   $obarrays = [$jamarguments.userscope, $jamarguments.standardscope, $standardscopedefault];
@@ -745,7 +763,7 @@ function jam ($jamarguments, $optional){
   const symbol = 0;
   const string = 1;
   const number = 2;
-  
+1  
   // const symbol = "symbol";
   // const string = "string";
   // const number = "number";
