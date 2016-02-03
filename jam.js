@@ -77,6 +77,12 @@ function jam ($jamarguments, $optional){
     });
   }
 
+  function assigninterns (symbols, values){
+    arrayarguments(values).map (function (value, index){
+      symbols[index] && symbols[index](value);
+    });
+  }
+
   function findobarrays (obarrays, name){
     if (0 < obarrays.length)
       return obarrays[0][name] ? obarrays[0][name] :
@@ -356,7 +362,7 @@ function jam ($jamarguments, $optional){
 
   var $force = defun (
     function (argument){
-      return argument();
+      return argument()();
     });
 
   var $lesserp = defun (
@@ -619,15 +625,12 @@ function jam ($jamarguments, $optional){
     function (argument){
       var object = {};
       var index;
-      for (index = 0; index < arguments.length; index += 2){
-	var name = arguments[index];
-	var value = arguments[index + 1];
-	object[name()()] = value()();
-      }
+      for (index = 0; index < arguments.length; index += 2)
+      	object[arguments[index]()()] = arguments[index + 1]()();
       // for (index = 0; index < arguments.length; index += 2){
-      //   var name = arguments[index];
-      //   var value = arguments[index + 1];
-      //   object [name()()] = value();
+      // 	var name = arguments[index];
+      // 	var value = arguments[index + 1];
+      // 	object[name()()] = value()();
       // }
       return inversion(object);
     });
@@ -714,6 +717,23 @@ function jam ($jamarguments, $optional){
         }));
     });
 
+  var $syntax = defun (
+    function (argument){
+
+      var argumenteds = argument()();
+      var rest = arrayarguments(arguments, 1);
+
+      return predefinedscope(defun(
+	function (argument){
+	  var result;
+	  pushobarray();
+	  assigninterns(argumenteds, arguments);
+	  result = $progn()(lazy(rest));
+	  popobarray();
+	  return result();
+	}));
+    });
+
   var $defun = defun (
     function (name){
       var rest = arrayarguments(arguments, 1);
@@ -721,25 +741,10 @@ function jam ($jamarguments, $optional){
       return $setq()(list(name, lazy(lambda)));
     });
 
-  // var $native = defun (
-  //   function (lambda){
-  //     return arrayarguments(arguments).map(call).map(call);
-  //   });
-
-  // var $nativefunction = defun (
-  //   function (lambda){
-  //     return function (argument){
-  //       var argumenteds = arrayarguments(arguments);
-  //       // console.log(argumenteds);
-  //       // argumenteds = ["nana"];
-  //       // console.log(argumenteds);
-  //       return lambda()()(lazy(argumenteds.map(lazy).map(inversion)))();
-  //     };
-  //   });
-
   $standardscopedefault = {
     // "native": $native,
     // "native-function": $nativefunction,
+    "syntax": $syntax,
     "pop": $pop,
     "push": $push,
     "eq": $eq,
