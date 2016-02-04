@@ -815,7 +815,7 @@ function jam ($jamarguments, $optional){
   const symbol = 0;
   const string = 1;
   const number = 2;
-1  
+
   // const symbol = "symbol";
   // const string = "string";
   // const number = "number";
