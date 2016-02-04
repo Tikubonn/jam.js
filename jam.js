@@ -911,15 +911,15 @@ function jam ($jamarguments, $optional){
   }
 
   function makepromisesymbol (value){
-    return new promise(value, symbol);
+    return promise(value, symbol);
   }
 
   function makepromisestring (value){
-    return new promise(value, string);
+    return promise(value, string);
   }
 
   function makepromisenumber (value){
-    return new promise(value, number);
+    return promise(value, number);
   }
 
   function parse (source){
