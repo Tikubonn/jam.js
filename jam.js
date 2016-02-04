@@ -1,4 +1,8 @@
 
+person = {some: {name: "tikubonn"}};
+jam ('(print person.some.name) (print person.some)', {nativescope: global});
+jam ('(print (get "name" (get "some" person))) (print (get "some" person))', {nativescope: global});
+
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
@@ -670,7 +674,6 @@ function jam ($jamarguments, $optional){
   var $get = defun (
     function (name, object){
       return inversionobject(object()(), name()());
-      
       // var named = name()();
       // var objected = object()();
       // return inversionobject(objected, named);
@@ -922,6 +925,14 @@ function jam ($jamarguments, $optional){
     return promise(value, number);
   }
 
+  function makepromiseelement (parent, name){
+    return function (){
+      return function (){
+	return $get()(list(lazy(inversion(name)), parent()));
+      };
+    };
+  }
+
   function parse (source){
 
     function slice (line, index){
@@ -976,6 +987,10 @@ function jam ($jamarguments, $optional){
       return line[0] == '"';
     }
 
+    function elep (line, acc){
+      return line[0] == ".";
+    }
+
     function symp (line, acc){
       return true;
     }
@@ -1009,8 +1024,15 @@ function jam ($jamarguments, $optional){
     }
 
     function onsym (line, acc){
-      var value = sliceunmatch(line, "( \t\n)");
+      var value = sliceunmatch(line, "( \t\n.)");
       acc.push(makepromisesymbol(value));
+    }
+
+    function onele (line, acc){
+      line.shift();
+      var name = sliceunmatch(line, "( \t\n.)");
+      var parent = acc.pop();
+      acc.push(makepromiseelement(parent, name));
     }
 
     function onignore (line, acc){
@@ -1045,6 +1067,7 @@ function jam ($jamarguments, $optional){
       [closep, onclose],
       [nump, onnum],
       [strp, onstr],
+      [elep, onele],
       [symp, onsym],
       [restp, onrest]
     ], source);
