@@ -1,8 +1,4 @@
 
-person = {some: {name: "tikubonn"}};
-jam ('(print person.some.name) (print person.some)', {nativescope: global});
-jam ('(print (get "name" (get "some" person))) (print (get "some" person))', {nativescope: global});
-
 // jam() is a jam programming language compiler.
 // its get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
@@ -161,12 +157,12 @@ function jam ($jamarguments, $optional){
 
     // on structure
     
-    if (value instanceof Object){
-      if (value.constructor == Array)
-	return inversionnativeexpandarray(value);
-      if (value.constructor == Object)
-	return inversionnativeexpandobject(value);
-    }
+    // if (value instanceof Object){
+    //   if (value.constructor == Array)
+    // 	return inversionnativeexpandarray(value);
+    //   if (value.constructor == Object)
+    // 	return inversionnativeexpandobject(value);
+    // }
 
     // on function
 
@@ -185,20 +181,20 @@ function jam ($jamarguments, $optional){
     };
   }
 
-  function inversionnativeexpandarray (parent){
-    return parent.map(
-      function (value, name){
-	return inversionnative(parent, name);
-      });
-  }
+  // function inversionnativeexpandarray (parent){
+  //   return parent.map(
+  //     function (value, name){
+  // 	return inversionnative(parent, name);
+  //     });
+  // }
   
-  function inversionnativeexpandobject (parent){
-    var object = {};
-    var name;
-    for (name in parent)
-      object[name] = inversionnative(parent, name);
-    return object;
-  }
+  // function inversionnativeexpandobject (parent){
+  //   var object = {};
+  //   var name;
+  //   for (name in parent)
+  //     object[name] = inversionnative(parent, name);
+  //   return object;
+  // }
   
   // function promisecall (argument, argument2){
   //   return function (){
@@ -926,11 +922,10 @@ function jam ($jamarguments, $optional){
   }
 
   function makepromiseelement (parent, name){
-    return function (){
-      return function (){
+    return lazy(
+      function (){
 	return $get()(list(lazy(inversion(name)), parent()));
-      };
-    };
+      });
   }
 
   function parse (source){
