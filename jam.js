@@ -264,9 +264,9 @@ function jam ($jamarguments, $optional){
   // primitive functions
   // there will calll for standards.
 
-  var $native = function (){
-    return inversionnativeexpandobject($jamarguments.nativescope);
-  };
+  // var $native = function (){
+  //   return inversionnativeexpandobject($jamarguments.nativescope);
+  // };
 
   var $true = defvar(true);
 
