@@ -1,6 +1,6 @@
 
 // jam() is a jam programming language compiler.
-// its get a argument that string source code or association object.
+// it is get a argument that string source code or association object.
 // if got argument is string then make the compiled closure and run it.
 // else then its up to association options.
 // it is be writen by tikubonn http://tikubonn.org or jp or @tikubonn in twitter.
@@ -136,11 +136,25 @@ function jam ($jamarguments, $optional){
   //   };
   // }
 
+  // function inversionobject (parent, name){
+  //   return function inversionobject (argument){
+  //     if (arguments.length == 1)
+  // 	parent[name] = argument;
+  //     return parent[name];
+  //   };
+  // }
+
   function inversionobject (parent, name){
+    var evaluated = false;
     return function inversionobject (argument){
-      if (arguments.length == 1)
-	parent[name] = argument;
-      return parent[name];
+      if (arguments.length == 1){
+	if (!evaluated && !parent[name])
+	  parent[name] = inversion(argument);
+	else
+	  parent[name](argument);
+	evaluated = true;
+      }
+      return parent[name] ? parent[name]() : $undefined;
     };
   }
   
@@ -585,6 +599,25 @@ function jam ($jamarguments, $optional){
     // }
   );
 
+  var $while = defun (
+    function (condition){
+      var rest = arrayarguments(arguments, 1);
+      while (condition()())
+	$progn()(lazy(rest));
+      return $null;
+    });
+
+  var $for = defun (
+    function (init, condition, next){
+      var rest = arrayarguments(arguments, 3);
+      init()();
+      while (condition()()){
+	$progn()(lazy(rest));
+	next()();
+      }
+      return $null;
+    });
+
   var $when = defun (
     function (condition){
       var rest = arrayarguments(arguments, 1);
@@ -626,7 +659,8 @@ function jam ($jamarguments, $optional){
       var object = {};
       var index;
       for (index = 0; index < arguments.length; index += 2)
-      	object[arguments[index]()()] = arguments[index + 1]()();
+      	object[arguments[index]()()] = arguments[index + 1]();
+        // object[arguments[index]()()] = arguments[index + 1]()();
       // for (index = 0; index < arguments.length; index += 2){
       // 	var name = arguments[index];
       // 	var value = arguments[index + 1];
@@ -637,7 +671,8 @@ function jam ($jamarguments, $optional){
 
   var $list = defun (
     function (argument){
-      return inversion(arrayarguments(arguments).map(call).map(call));
+      return inversion(arrayarguments(arguments).map(call));
+      // return inversion(arrayarguments(arguments).map(call).map(call));
     });
 
   var $lisy = defun (
@@ -670,6 +705,7 @@ function jam ($jamarguments, $optional){
   var $get = defun (
     function (name, object){
       return inversionobject(object()(), name()());
+      // return inversionobject(object()(), name()());
       // var named = name()();
       // var objected = object()();
       // return inversionobject(objected, named);
@@ -678,6 +714,7 @@ function jam ($jamarguments, $optional){
   var $nth = defun (
     function (index, sequence){
       return inversionobject(sequence()(), index()());
+      // return inversionobject(sequence()(), index()());
       // var indexed = index()();
       // var sequenced = sequence()();
       // return inversionobject(sequenced, indexed);
@@ -778,6 +815,8 @@ function jam ($jamarguments, $optional){
     "<": $lesserp,
     ">=": $largeroreqp,
     "<=": $lesseroreqp,
+    "while": $while,
+    "for": $for,
     "when": $when,
     "unless": $unless,
     "if": $if,
@@ -1120,12 +1159,10 @@ function jam ($jamarguments, $optional){
       if (context instanceof Array)
         return build2seq(context);
       return context();
-      // return context.force();
     }
 
     function build2 (context){
       return promisecall(
-        // intern("progn")
 	lazy ($progn),
         lazy (context.map(build2in)));
     }
