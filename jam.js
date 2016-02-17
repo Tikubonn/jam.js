@@ -756,7 +756,7 @@ function jam ($jamarguments, $optional){
     "push": $push,
     "eq": $eq,
     "equal": $equal,
-    "native": $native,
+    // "native": $native,
     ">": $largerp,
     "<": $lesserp,
     ">=": $largeroreqp,
