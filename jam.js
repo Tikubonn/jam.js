@@ -143,20 +143,6 @@ function jam ($jamarguments, $optional){
       return parent[name];
     };
   }
-
-  // function inversionobject (parent, name){
-  //   var evaluated = false;
-  //   return function inversionobject (argument){
-  //     if (arguments.length == 1){
-  // 	if (!evaluated && parent[name] == undefined)
-  // 	  parent[name] = inversion(argument);
-  // 	else
-  // 	  parent[name](argument);
-  // 	evaluated = true;
-  //     }
-  //     return parent[name] == undefined ? undefined : parent[name]();
-  //   };
-  // }
   
   function inversionnative (parent, name){
     return function inversionnative (argument){
@@ -292,7 +278,7 @@ function jam ($jamarguments, $optional){
 
   var $eq = defun (
     function (a, b){
-      return inversion(a() === b());
+      return inversion(a === b);
     });
 
   var $equal = defun (
@@ -650,7 +636,6 @@ function jam ($jamarguments, $optional){
   var $print = defun (
     function (argument){
       var argumented = argument();
-      console.log(argumented);
       console.log(argumented());
       return argumented;
     });
