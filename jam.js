@@ -136,27 +136,27 @@ function jam ($jamarguments, $optional){
   //   };
   // }
 
-  // function inversionobject (parent, name){
-  //   return function inversionobject (argument){
-  //     if (arguments.length == 1)
-  // 	parent[name] = argument;
-  //     return parent[name];
-  //   };
-  // }
-
   function inversionobject (parent, name){
-    var evaluated = false;
     return function inversionobject (argument){
-      if (arguments.length == 1){
-	if (!evaluated && !parent[name])
-	  parent[name] = inversion(argument);
-	else
-	  parent[name](argument);
-	evaluated = true;
-      }
-      return parent[name] ? parent[name]() : $undefined;
+      if (arguments.length == 1)
+  	parent[name] = argument;
+      return parent[name];
     };
   }
+
+  // function inversionobject (parent, name){
+  //   var evaluated = false;
+  //   return function inversionobject (argument){
+  //     if (arguments.length == 1){
+  // 	if (!evaluated && parent[name] == undefined)
+  // 	  parent[name] = inversion(argument);
+  // 	else
+  // 	  parent[name](argument);
+  // 	evaluated = true;
+  //     }
+  //     return parent[name] == undefined ? undefined : parent[name]();
+  //   };
+  // }
   
   function inversionnative (parent, name){
     return function inversionnative (argument){
@@ -650,6 +650,7 @@ function jam ($jamarguments, $optional){
   var $print = defun (
     function (argument){
       var argumented = argument();
+      console.log(argumented);
       console.log(argumented());
       return argumented;
     });
@@ -661,11 +662,6 @@ function jam ($jamarguments, $optional){
       for (index = 0; index < arguments.length; index += 2)
       	object[arguments[index]()()] = arguments[index + 1]();
         // object[arguments[index]()()] = arguments[index + 1]()();
-      // for (index = 0; index < arguments.length; index += 2){
-      // 	var name = arguments[index];
-      // 	var value = arguments[index + 1];
-      // 	object[name()()] = value()();
-      // }
       return inversion(object);
     });
 
@@ -704,6 +700,10 @@ function jam ($jamarguments, $optional){
 
   var $get = defun (
     function (name, object){
+      // var named = name()();
+      // var objected = object()();
+      // return objected[named] ? objected[named] :
+      // 	inversionobject(object, name);
       return inversionobject(object()(), name()());
       // return inversionobject(object()(), name()());
       // var named = name()();
