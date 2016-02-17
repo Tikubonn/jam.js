@@ -698,6 +698,18 @@ function jam ($jamarguments, $optional){
     function (argument, argument2){
       return argument()()(lazy(argument2()().map(lazy)));
     });
+  
+  var $catch = defun (
+    function (error, form){
+      var rest = arrayarguments(arguments, 2);
+      try {
+	return form();
+      }
+      catch (condition){
+	error(inversion(condition));
+	return $progn()(lazy(rest));
+      }
+    });
 
   var $lambda = defun (
     function (argument){
@@ -782,6 +794,7 @@ function jam ($jamarguments, $optional){
     "setq": $setq,
     "setf": $setf,
     "print": $print,
+    "catch": $catch,
     "lambda": $lambda,
     "defun": $defun,
     "funcall": $funcall,
