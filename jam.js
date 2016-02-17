@@ -711,6 +711,11 @@ function jam ($jamarguments, $optional){
       }
     });
 
+  var $error = defun (
+    function (error){
+      throw(error()());
+    });
+
   var $lambda = defun (
     function (argument){
 
@@ -795,6 +800,7 @@ function jam ($jamarguments, $optional){
     "setf": $setf,
     "print": $print,
     "catch": $catch,
+    "error": $error,
     "lambda": $lambda,
     "defun": $defun,
     "funcall": $funcall,
